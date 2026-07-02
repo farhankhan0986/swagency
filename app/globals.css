@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — every color in every component comes from here.    */
+/* Stored as space-separated RGB channels so Tailwind can apply       */
+/* opacity, e.g. rgb(var(--color-accent)/0.15).                       */
+/* ------------------------------------------------------------------ */
+:root {
+  --color-background: 9 11 11;          /* #090B0B, near-black, cool undertone */
+  --color-surface: 16 19 19;            /* #101313, card and box backgrounds */
+  --color-border: 33 39 38;             /* #212726, subtle, low contrast */
+  --color-foreground: 231 236 234;      /* #E7ECEA, off-white, primary text */
+  --color-muted: 139 149 145;           /* #8B9591, secondary text */
+  --color-accent: 45 212 167;           /* #2DD4A7, teal */
+  --color-accent-2: 16 185 129;         /* #10B981, emerald — aurora banding only */
+  --color-accent-foreground: 5 12 10;   /* dark text on top of accent buttons */
+}
+
+html,
+body {
+  max-width: 100%;
+}
+
+/* Use `clip`, not `hidden`: `overflow-x: hidden` forces overflow-y to `auto`,
+   turning body into a scroll container that fights Lenis. `clip` prevents the
+   horizontal overflow without creating a scroll container. */
+body {
+  overflow-x: clip;
+}
+
+body {
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ------------------------------------------------------------------ */
+/* Live AI box cursor                                                  */
+/* ------------------------------------------------------------------ */
+.ai-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  transform: translateY(0.18em);
+  background: rgb(var(--color-foreground));
+  animation: ai-blink 1.05s steps(1) infinite;
+}
+
+@keyframes ai-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Inner glow spill for the LiveAIBox animated gradient border */
+.ai-glow-spill-mask {
+  -webkit-mask-image: radial-gradient(
+    ellipse 100% 100% at 50% 50%,
+    transparent 50%,
+    black 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 100% 100% at 50% 50%,
+    transparent 50%,
+    black 100%
+  );
+}
+
+/* Gentle float — contact mail icon + "We are here" tooltip */
+.contact-float {
+  animation: contact-float 3.2s ease-in-out infinite;
+}
+@keyframes contact-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Availability "live" dot in the eyebrow pill */
+.live-ping {
+  animation: live-ping 1.9s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes live-ping {
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Scroll cue */
+.scroll-cue {
+  animation: scroll-cue-pulse 2.8s ease-in-out infinite;
+}
+@keyframes scroll-cue-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Glow CTA button — glassy dark surface, sparkle icon, per-letter     */
+/* shimmer, and a hover glow. Adapted to the teal token system.        */
+/* ------------------------------------------------------------------ */
+.glow-btn {
+  --gb-transition: 0.4s;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.72em 1.35em 0.72em 1.15em;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  color: rgb(var(--color-foreground));
+  background-color: rgb(var(--color-surface));
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 14px;
+  cursor: pointer;
+  overflow: hidden;
+  /* Glassy top light + soft drop shadow, all token-driven. */
+  box-shadow:
+    inset 0 1px 1px rgb(var(--color-foreground) / 0.14),
+    inset 0 2px 3px rgb(var(--color-foreground) / 0.07),
+    inset 0 10px 14px rgb(var(--color-foreground) / 0.03),
+    0 -2px 4px rgb(var(--color-background) / 0.4),
+    0 10px 20px -10px rgb(var(--color-background) / 0.9);
+  transition:
+    box-shadow var(--gb-transition),
+    border-color var(--gb-transition),
+    background-color var(--gb-transition);
+}
+
+/* Compact variant — for the navbar. */
+.glow-btn--sm {
+  font-size: 0.875rem;
+  padding: 0.5em 1.05em 0.5em 0.85em;
+  gap: 0.4rem;
+  border-radius: 12px;
+}
+
+/* Bottom edge glow, revealed on hover / focus / active. */
+.glow-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: linear-gradient(
+    0deg,
+    rgb(var(--color-foreground)) 0%,
+    rgb(var(--color-accent)) 3%,
+    rgb(var(--color-accent) / 0.4) 6%,
+    transparent 13%
+  );
+  opacity: 0;
+  transition: opacity var(--gb-transition), filter var(--gb-transition);
+}
+
+.glow-btn:hover {
+  border-color: rgb(var(--color-accent) / 0.6);
+}
+.glow-btn:hover::after {
+  opacity: 0.75;
+}
+.glow-btn:active {
+  border-color: rgb(var(--color-accent) / 0.85);
+  background-color: rgb(var(--color-accent) / 0.12);
+}
+.glow-btn:active::after {
+  opacity: 1;
+  filter: brightness(1.3);
+}
+.glow-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgb(var(--color-accent)),
+    0 0 0 4px rgb(var(--color-background));
+}
+
+/* Sparkle / arrow icon — flickers softly, snaps bright on hover. */
+.glow-btn-icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+  fill: rgb(var(--color-foreground));
+  filter: drop-shadow(0 0 2px rgb(var(--color-foreground) / 0.5));
+  animation: gb-flicker 2.4s linear infinite;
+  animation-delay: 0.4s;
+  transition: fill var(--gb-transition), filter var(--gb-transition);
+}
+.glow-btn:hover .glow-btn-icon {
+  fill: rgb(var(--color-accent));
+  filter: drop-shadow(0 0 4px rgb(var(--color-accent) / 0.85));
+  animation: none;
+}
+@keyframes gb-flicker {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Label letters — idle shimmer, staggered via inline animation-delay. */
+.glow-btn-text {
+  display: inline-flex;
+  white-space: nowrap;
+}
+.glow-btn-letter {
+  display: inline-block;
+  white-space: pre;
+  color: rgb(var(--color-foreground) / 0.7);
+  animation: gb-letter 2.4s ease-in-out infinite;
+  transition: color var(--gb-transition), text-shadow var(--gb-transition);
+}
+.glow-btn:hover .glow-btn-letter {
+  color: rgb(var(--color-foreground));
+}
+@keyframes gb-letter {
+  50% {
+    color: rgb(var(--color-foreground));
+    text-shadow: 0 0 6px rgb(var(--color-accent) / 0.5);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion: freeze the aurora on a static frame, stop the      */
+/* cursor blink and scroll-cue pulse. The AI box typing and entrance  */
+/* sequence are disabled in their components via prefers-reduced.     */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-layer,
+  .aurora-layer::after {
+    animation: none !important;
+  }
+  .ai-cursor {
+    animation: none !important;
+    opacity: 1;
+  }
+  .scroll-cue {
+    animation: none !important;
+    opacity: 0.4;
+  }
+  .live-ping {
+    animation: none !important;
+    opacity: 0;
+  }
+  .glow-btn-icon,
+  .glow-btn-letter {
+    animation: none !important;
+  }
+  .glow-btn-letter {
+    color: rgb(var(--color-foreground));
+  }
+  .contact-float {
+    animation: none !important;
+  }
+}
