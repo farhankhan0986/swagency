@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
-// Deterministic per-card tilt — avoids the SSR/client hydration mismatch that
+// Deterministic per-card tilt  avoids the SSR/client hydration mismatch that
 // Math.random() would cause, while keeping the shuffled-stack look.
 const ROTATIONS = [-8, 6, -5, 9, -7, 4];
 const rotateFor = (index) => ROTATIONS[index % ROTATIONS.length];

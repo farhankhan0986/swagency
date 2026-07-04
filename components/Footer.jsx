@@ -1,12 +1,18 @@
+"use client";
+
+import { ArrowUp, Mail, MapPin, Phone } from "lucide-react";
 import KorvaneMark from "@/components/ui/KorvaneMark";
 
-const NAV_LINKS = [
-  { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Process", href: "#process" },
+const EXPLORE_LINKS = [
+  { label: "What we build", href: "#services" },
+  { label: "Why choose us", href: "#why-us" },
+  { label: "Our stack", href: "#stack" },
   { label: "Pricing", href: "#pricing" },
+];
+
+const SUPPORT_LINKS = [
+  { label: "Testimonials", href: "#testimonials" },
   { label: "FAQ", href: "#faq" },
-  { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -39,80 +45,197 @@ const SOCIALS = [
   },
 ];
 
+function FooterLink({ href, children }) {
+  const isAnchor = href.startsWith("#");
+  return (
+    <a
+      href={href}
+      onClick={
+        isAnchor
+          ? (e) => {
+              e.preventDefault();
+              document
+                .querySelector(href)
+                ?.scrollIntoView({ behavior: "smooth" });
+            }
+          : undefined
+      }
+      className="group relative inline-block text-sm text-[rgb(var(--color-muted))] outline-none transition-colors duration-300 hover:text-[rgb(var(--color-foreground))] focus-visible:text-[rgb(var(--color-foreground))]"
+    >
+      {children}
+      <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-[rgb(var(--color-accent))] transition-all duration-300 group-hover:w-full" />
+    </a>
+  );
+}
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="bg-[rgb(var(--color-background))] px-2 pb-6">
-      <div className="mx-auto rounded-[20px] border-2 border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.3)] px-6 pb-10 pt-12 transition-[border-color,box-shadow] duration-500 hover:border-[rgb(var(--color-accent)/0.7)] hover:shadow-[0_0_40px_-8px_rgb(var(--color-accent)/0.35)] sm:px-14">
-        {/* Top divider */}
-        <div className="h-px w-full bg-[rgb(var(--color-foreground)/0.08)]" />
+      <div className="relative mx-auto overflow-hidden rounded-[24px] border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.3)]">
+        {/* Accent hairline along the top edge */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgb(var(--color-accent)/0.5)] to-transparent"
+        />
+        {/* Soft aura */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-64 w-[560px] -translate-x-1/2 rounded-full bg-[rgb(var(--color-accent)/0.05)] blur-3xl"
+        />
 
-        {/* Brand */}
-        <div className="mt-10 flex flex-col items-center text-center">
-          <div className="flex items-center gap-2">
-            <span className="grid size-9 place-items-center rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface))]">
-              <KorvaneMark width={18} />
-            </span>
-            <span className="text-2xl font-semibold tracking-tight text-[rgb(var(--color-foreground))]">
+        <div className="relative px-6 pt-14 sm:px-14">
+          {/* Top  brand + link columns */}
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.3fr_1fr_1fr_1.15fr] md:gap-8">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2.5">
+                <span className="grid size-9 place-items-center rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface))]">
+                  <KorvaneMark width={18} />
+                </span>
+                <span className="text-xl font-semibold tracking-tight text-[rgb(var(--color-foreground))]">
+                  Korvane
+                </span>
+              </div>
+              <p className="mt-4 max-w-xs text-sm leading-relaxed text-[rgb(var(--color-muted))]">
+                Building modern websites, AI applications, and scalable
+                software for startups and businesses.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] px-3 py-1.5 text-xs font-medium text-[rgb(var(--color-muted))]">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="live-ping absolute inline-flex h-full w-full rounded-full bg-[rgb(var(--color-accent))] opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[rgb(var(--color-accent))]" />
+                </span>
+                Available for new projects
+              </span>
+            </div>
+
+            {/* Explore */}
+            <nav aria-label="Explore">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.25em] text-[rgb(var(--color-muted)/0.7)]">
+                Explore
+              </h3>
+              <ul className="mt-4 flex flex-col gap-3">
+                {EXPLORE_LINKS.map((link) => (
+                  <li key={link.label}>
+                    <FooterLink href={link.href}>{link.label}</FooterLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Support */}
+            <nav aria-label="Support">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.25em] text-[rgb(var(--color-muted)/0.7)]">
+                Support
+              </h3>
+              <ul className="mt-4 flex flex-col gap-3">
+                {SUPPORT_LINKS.map((link) => (
+                  <li key={link.label}>
+                    <FooterLink href={link.href}>{link.label}</FooterLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Get in touch */}
+            <div>
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.25em] text-[rgb(var(--color-muted)/0.7)]">
+                Get in touch
+              </h3>
+              <ul className="mt-4 flex flex-col gap-3 text-sm text-[rgb(var(--color-muted))]">
+                <li>
+                  <a
+                    href="mailto:hello@korvane.dev"
+                    className="inline-flex items-center gap-2.5 transition-colors hover:text-[rgb(var(--color-foreground))]"
+                  >
+                    <Mail
+                      className="size-4 text-[rgb(var(--color-accent))]"
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                    />
+                    hello@korvane.dev
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="tel:+910000000000"
+                    className="inline-flex items-center gap-2.5 transition-colors hover:text-[rgb(var(--color-foreground))]"
+                  >
+                    <Phone
+                      className="size-4 text-[rgb(var(--color-accent))]"
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                    />
+                    +91 00000 00000
+                  </a>
+                </li>
+                <li className="inline-flex items-center gap-2.5">
+                  <MapPin
+                    className="size-4 text-[rgb(var(--color-accent))]"
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                  Remote · Worldwide
+                </li>
+              </ul>
+
+              {/* Socials */}
+              <ul className="mt-5 flex items-center gap-2.5">
+                {SOCIALS.map((social) => (
+                  <li key={social.label}>
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      className="grid size-9 place-items-center rounded-xl border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] text-[rgb(var(--color-muted))] outline-none transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgb(var(--color-accent)/0.45)] hover:text-[rgb(var(--color-accent))] hover:shadow-[0_0_16px_-6px_rgb(var(--color-accent)/0.5)] focus-visible:ring-2 focus-visible:ring-[rgb(var(--color-accent))]"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="size-4"
+                        aria-hidden="true"
+                      >
+                        <path d={social.path} />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Ghost wordmark  cropped by the card edge */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none relative mt-14 h-20 select-none overflow-hidden sm:h-32"
+          >
+            <span className="absolute left-1/2 top-0 -translate-x-1/2 whitespace-nowrap bg-gradient-to-b from-[rgb(var(--color-foreground)/0.08)] to-transparent bg-clip-text font-display text-[6.5rem] font-semibold leading-none tracking-tight text-transparent sm:text-[11rem]">
               Korvane
             </span>
           </div>
-
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-[rgb(var(--color-muted))]">
-            Building modern websites, AI applications, and scalable software for
-            startups and businesses.
-          </p>
-
-          {/* Navigation */}
-          <nav className="mt-7">
-            <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
-              {NAV_LINKS.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="group relative text-sm text-[rgb(var(--color-foreground)/0.82)] outline-none transition-colors hover:text-[rgb(var(--color-foreground))] focus-visible:text-[rgb(var(--color-foreground))]"
-                  >
-                    {link.label}
-                    <span className="absolute -bottom-1 left-0 h-px w-0 bg-[rgb(var(--color-accent))] transition-all duration-300 group-hover:w-full" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
         </div>
 
-        {/* Middle divider */}
-        <div className="mt-10 border-t border-dotted border-[rgb(var(--color-foreground)/0.12)]" />
-
-        {/* Bottom row */}
-        <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
-          <p className="text-sm text-[rgb(var(--color-muted)/0.85)]">
-            © {year} Korvane. All rights reserved.
-          </p>
-
-          <ul className="flex items-center gap-6">
-            {SOCIALS.map((social) => (
-              <li key={social.label}>
-                <a
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="block text-[rgb(var(--color-muted))] bg-[rgb(var(--color-accent)/0.1)] rounded-full outline-none transition-all duration-300 hover:-translate-y-0.5 hover:text-[rgb(var(--color-foreground))] focus-visible:text-[rgb(var(--color-foreground))]"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="size-[18px]"
-                    aria-hidden="true"
-                  >
-                    <path d={social.path} />
-                  </svg>
-                </a>
-              </li>
-            ))}
-          </ul>
+        {/* Bottom bar */}
+        <div className="relative border-t border-[rgb(var(--color-foreground)/0.08)] px-6 py-6 sm:px-14">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+            <p className="text-sm text-[rgb(var(--color-muted)/0.85)]">
+              © {year} Korvane. All rights reserved.
+            </p>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="group inline-flex items-center gap-2 rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] px-4 py-2 text-xs font-medium text-[rgb(var(--color-muted))] outline-none transition-all duration-300 hover:border-[rgb(var(--color-accent)/0.45)] hover:text-[rgb(var(--color-foreground))] focus-visible:ring-2 focus-visible:ring-[rgb(var(--color-accent))]"
+            >
+              Back to top
+              <ArrowUp
+                className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+              />
+            </button>
+          </div>
         </div>
       </div>
     </footer>

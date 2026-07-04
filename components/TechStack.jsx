@@ -193,7 +193,7 @@ export default function TechStack() {
             variants={item}
             className="mt-5 text-base leading-relaxed text-[rgb(var(--color-muted))] sm:text-lg"
           >
-            Battle-tested technologies we reach for every day — chosen for
+            Battle-tested technologies we reach for every day  chosen for
             speed, reliability, and how well they age.
           </motion.p>
         </motion.div>

@@ -61,7 +61,7 @@ export default function WorldMap({ dots = [], lineColor }) {
           const startPoint = projectPoint(dot.start.lat, dot.start.lng);
           const endPoint = projectPoint(dot.end.lat, dot.end.lng);
           if (startPoint.x === endPoint.x && startPoint.y === endPoint.y) {
-            return null; // single marker — no arc
+            return null; // single marker  no arc
           }
           return (
             <motion.path

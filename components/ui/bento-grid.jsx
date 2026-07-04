@@ -48,7 +48,7 @@ export const BentoGridItem = ({
         className
       )}
     >
-      {/* Pointer spotlight — fades in on hover, follows the cursor. */}
+      {/* Pointer spotlight  fades in on hover, follows the cursor. */}
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-300 group-hover/bento:opacity-100"

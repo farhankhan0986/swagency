@@ -11,7 +11,7 @@ import React, { useEffect, useRef } from "react";
  *    --color-accent-2; the striping uses --color-background. No hex, no blue.
  *  - Always dark: the light/invert path and zinc backgrounds are removed.
  *  - Perf: the stock component animates background-position on a full-screen
- *    blurred, blend-mode layer — a whole-screen repaint every frame. Here the
+ *    blurred, blend-mode layer  a whole-screen repaint every frame. Here the
  *    two gradient layers are oversized, painted once, and drift via
  *    transform-only keyframes (.aurora-layer--a / --b in globals.css), so the
  *    animation runs entirely on the compositor.
@@ -98,7 +98,7 @@ export const AuroraBackground = ({
       style={{ "--pointer-x": 0.5, "--pointer-y": 0.5 }}
       {...props}
     >
-      {/* Parallax wrapper — the damped pointer translate lives here so it never
+      {/* Parallax wrapper  the damped pointer translate lives here so it never
           collides with the layers' own drift animation. */}
       <div
         aria-hidden="true"
@@ -121,12 +121,12 @@ export const AuroraBackground = ({
               "[mask-image:radial-gradient(ellipse_at_50%_0%,black_10%,transparent_70%)]"
           )}
         >
-          {/* Base banding — slow horizontal drift */}
+          {/* Base banding  slow horizontal drift */}
           <div
             className="aurora-layer aurora-layer--a absolute left-[-60%] top-[-20%] h-[140%] w-[220%] blur-[10px] will-change-transform"
             style={layerStyle}
           />
-          {/* Interference layer — different scale + speed, blended for the
+          {/* Interference layer  different scale + speed, blended for the
               shimmering banding the stock aurora gets from its ::after */}
           <div
             className="aurora-layer aurora-layer--b absolute left-[-60%] top-[-20%] h-[140%] w-[220%] mix-blend-difference blur-[10px] will-change-transform"
@@ -138,7 +138,7 @@ export const AuroraBackground = ({
         </div>
       </div>
 
-      {/* Film grain — neutral, very low opacity. Adds premium texture and
+      {/* Film grain  neutral, very low opacity. Adds premium texture and
           breaks up the flat gradient banding. */}
       <div
         aria-hidden="true"
@@ -149,7 +149,7 @@ export const AuroraBackground = ({
         }}
       ></div>
 
-      {/* Grounding vignette — keeps the eye centered on the content. */}
+      {/* Grounding vignette  keeps the eye centered on the content. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"

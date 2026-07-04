@@ -5,7 +5,7 @@ import "lenis/dist/lenis.css";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 
-// Display face — headline only. Warm serif with soft, unconventional curves.
+// Display face  headline only. Warm serif with soft, unconventional curves.
 const fraunces = Fraunces({
   subsets: ["latin"],
   display: "swap",

@@ -71,7 +71,7 @@ export const CometCard = ({
     y.set(0);
   };
 
-  // Reduced motion: no tilt, no glare — just render the content.
+  // Reduced motion: no tilt, no glare  just render the content.
   if (reduce) {
     return (
       <div className={cn("[perspective:1200px]", className)}>

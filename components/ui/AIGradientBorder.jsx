@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
  * @param {string}  [props.as="div"]            - root element tag ("div" | "section" | …)
  */
 
-// One long, calm arc — the default, used by the LiveAIBox card.
+// One long, calm arc  the default, used by the LiveAIBox card.
 const DEFAULT_STOPS =
   "transparent 0%, rgb(var(--color-accent) / 0) 5%, rgb(var(--color-accent)) 12%, rgb(var(--color-accent-2)) 26%, rgb(var(--color-accent)) 40%, rgb(var(--color-accent-2) / 0) 50%, transparent 56%";
 
@@ -58,7 +58,7 @@ export function AIGradientBorder({
 
   return (
     <Tag className={cn("relative", className)}>
-      {/* Content layer — overflow hidden so the glow spill is clipped to the
+      {/* Content layer  overflow hidden so the glow spill is clipped to the
           card shape. Children sit above (z-20) the glow (z-10). */}
       <div className="relative overflow-hidden rounded-[inherit]">
         <div className="relative z-20">{children}</div>
@@ -75,7 +75,7 @@ export function AIGradientBorder({
         )}
       </div>
 
-      {/* Gradient border ring — masked to the ring edge only via the
+      {/* Gradient border ring  masked to the ring edge only via the
           border-box / content-box exclude trick. The base color fills the
           gradient's transparent gaps so the edge reads continuous. */}
       <div

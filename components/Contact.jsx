@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Mail } from "lucide-react";
 import WorldMap from "@/components/ui/world-map";
 import GlowButton from "@/components/ui/GlowButton";
@@ -57,7 +57,7 @@ export default function Contact() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setStatus("submitting");
-    // Placeholder submit — swap for a POST to /api/contact (MongoDB) later.
+    // Placeholder submit  swap for a POST to /api/contact (MongoDB) later.
     await new Promise((r) => setTimeout(r, 900));
     setStatus("success");
   };
@@ -69,7 +69,7 @@ export default function Contact() {
     >
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-2">
-          {/* Left — pitch, contacts, map */}
+          {/* Left  pitch, contacts, map */}
           <motion.div
             initial="hidden"
             whileInView="show"
@@ -99,7 +99,7 @@ export default function Contact() {
               variants={item}
               className="mt-6 max-w-[470px] text-base leading-[1.8] text-[rgb(var(--color-muted))] sm:text-lg"
             >
-              Tell us what you&apos;re building — an idea to pressure-test, a
+              Tell us what you&apos;re building  an idea to pressure-test, a
               project to scope, or a problem to solve. We reply within a day.
             </motion.p>
 
@@ -133,7 +133,7 @@ export default function Contact() {
             <motion.div variants={item} className="relative mt-14 w-full">
               <WorldMap dots={[{ start: INDIA, end: INDIA }]} />
 
-              {/* Marker overlay — beam + floating tooltip over India */}
+              {/* Marker overlay  beam + floating tooltip over India */}
               <div
                 className="pointer-events-none absolute"
                 style={{ left: MARKER_LEFT, top: MARKER_TOP }}
@@ -155,13 +155,13 @@ export default function Contact() {
             </motion.div>
           </motion.div>
 
-          {/* Right — form card */}
+          {/* Right  form card */}
           <motion.div
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: reduce ? 0.2 : 0.6, ease }}
-            className="relative w-full justify-self-stretch overflow-hidden rounded-[28px] border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.5)] p-7 shadow-[0_20px_60px_-24px_rgb(var(--color-background)/0.9)] backdrop-blur-sm sm:p-10 lg:max-w-[560px] lg:justify-self-end"
+            className="relative w-full justify-self-stretch overflow-hidden rounded-[28px] border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.5)] p-7 shadow-[0_20px_60px_-24px_rgb(var(--color-background)/0.9)] backdrop-blur-sm transition-colors duration-500 focus-within:border-[rgb(var(--color-accent)/0.35)] sm:p-10 lg:max-w-[560px] lg:justify-self-end"
           >
             {/* Grid pattern */}
             <div
@@ -182,90 +182,209 @@ export default function Contact() {
             </div>
 
             <div className="relative z-10">
-              {status === "success" ? (
-                <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
-                  <span className="grid size-14 place-items-center rounded-full border border-[rgb(var(--color-accent)/0.4)] bg-[rgb(var(--color-accent)/0.12)] text-[rgb(var(--color-accent))]">
-                    <svg viewBox="0 0 24 24" fill="none" className="size-7" aria-hidden="true">
-                      <path
-                        d="M4 12.5 9 17.5 20 6.5"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                  <h3 className="mt-6 font-display text-2xl font-medium text-[rgb(var(--color-foreground))]">
-                    Message sent
-                  </h3>
-                  <p className="mt-2 max-w-xs text-sm text-[rgb(var(--color-muted))]">
-                    Thanks for reaching out — we&apos;ll get back to you within a
-                    day.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setStatus("idle")}
-                    className="mt-6 rounded-lg px-4 py-2 text-sm text-[rgb(var(--color-muted))] outline-none transition-colors hover:text-[rgb(var(--color-foreground))] focus-visible:ring-2 focus-visible:ring-[rgb(var(--color-accent))] focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--color-background))]"
+              <AnimatePresence mode="wait" initial={false}>
+                {status === "success" ? (
+                  <motion.div
+                    key="success"
+                    initial={
+                      reduce
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: 14, scale: 0.97 }
+                    }
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
+                    transition={{ duration: reduce ? 0.2 : 0.45, ease }}
+                    className="flex min-h-[420px] flex-col items-center justify-center text-center"
                   >
-                    Send another
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={onSubmit} className="flex flex-col gap-6">
-                  {FIELDS.map((field) => (
-                    <div key={field.name}>
-                      <label
-                        htmlFor={field.name}
-                        className="mb-2 block text-sm font-medium text-[rgb(var(--color-foreground))]"
+                    <div className="relative">
+                      {/* One-shot expanding ring */}
+                      {!reduce && (
+                        <motion.span
+                          aria-hidden="true"
+                          initial={{ opacity: 0.7, scale: 0.5 }}
+                          animate={{ opacity: 0, scale: 2.1 }}
+                          transition={{
+                            duration: 0.9,
+                            ease: "easeOut",
+                            delay: 0.15,
+                          }}
+                          className="absolute inset-0 rounded-full border border-[rgb(var(--color-accent)/0.6)]"
+                        />
+                      )}
+                      <motion.span
+                        initial={reduce ? {} : { scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: reduce ? 0 : 0.4, ease }}
+                        className="grid size-16 place-items-center rounded-full border border-[rgb(var(--color-accent)/0.4)] bg-[rgb(var(--color-accent)/0.12)] text-[rgb(var(--color-accent))] shadow-[0_0_36px_-8px_rgb(var(--color-accent)/0.7)]"
                       >
-                        {field.label}
-                        {field.optional && (
-                          <span className="ml-1.5 text-xs font-normal text-[rgb(var(--color-muted)/0.7)]">
-                            optional
-                          </span>
-                        )}
-                      </label>
-                      <input
-                        id={field.name}
-                        name={field.name}
-                        type={field.type}
-                        required={!field.optional}
-                        placeholder={field.placeholder}
-                        className="h-[52px] w-full rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-background)/0.6)] px-4 text-[rgb(var(--color-foreground))] outline-none transition-colors placeholder:text-[rgb(var(--color-muted)/0.7)] focus:border-[rgb(var(--color-accent)/0.6)] focus:ring-1 focus:ring-[rgb(var(--color-accent)/0.5)]"
-                      />
+                        {/* Checkmark draws itself in */}
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="size-8"
+                          aria-hidden="true"
+                        >
+                          <motion.path
+                            d="M4 12.5 9 17.5 20 6.5"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            initial={{ pathLength: reduce ? 1 : 0 }}
+                            animate={{ pathLength: 1 }}
+                            transition={{
+                              duration: reduce ? 0 : 0.5,
+                              delay: reduce ? 0 : 0.25,
+                              ease: "easeOut",
+                            }}
+                          />
+                        </svg>
+                      </motion.span>
                     </div>
-                  ))}
-
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="mb-2 block text-sm font-medium text-[rgb(var(--color-foreground))]"
+                    <motion.h3
+                      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: reduce ? 0.2 : 0.4,
+                        delay: reduce ? 0 : 0.3,
+                        ease,
+                      }}
+                      className="mt-6 font-display text-2xl font-medium text-[rgb(var(--color-foreground))]"
                     >
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      required
-                      rows={4}
-                      placeholder="Tell us about your project…"
-                      className="min-h-[120px] w-full resize-y rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-background)/0.6)] p-4 text-[rgb(var(--color-foreground))] outline-none transition-colors placeholder:text-[rgb(var(--color-muted)/0.7)] focus:border-[rgb(var(--color-accent)/0.6)] focus:ring-1 focus:ring-[rgb(var(--color-accent)/0.5)]"
-                    />
-                  </div>
-
-                  <GlowButton
-                    type="submit"
-                    icon="sparkle"
-                    disabled={status === "submitting"}
-                    className={cn(
-                      "mt-1 self-start",
-                      status === "submitting" && "pointer-events-none opacity-70"
-                    )}
+                      Message sent
+                    </motion.h3>
+                    <motion.p
+                      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: reduce ? 0.2 : 0.4,
+                        delay: reduce ? 0 : 0.4,
+                        ease,
+                      }}
+                      className="mt-2 max-w-xs text-sm text-[rgb(var(--color-muted))]"
+                    >
+                      Thanks for reaching out  we&apos;ll get back to you
+                      within a day.
+                    </motion.p>
+                    <motion.button
+                      type="button"
+                      onClick={() => setStatus("idle")}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{
+                        duration: reduce ? 0.2 : 0.4,
+                        delay: reduce ? 0 : 0.55,
+                      }}
+                      className="mt-6 rounded-lg px-4 py-2 text-sm text-[rgb(var(--color-muted))] outline-none transition-colors hover:text-[rgb(var(--color-foreground))] focus-visible:ring-2 focus-visible:ring-[rgb(var(--color-accent))] focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--color-background))]"
+                    >
+                      Send another
+                    </motion.button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="form"
+                    exit={
+                      reduce
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: -14, scale: 0.98 }
+                    }
+                    transition={{ duration: reduce ? 0.2 : 0.3, ease }}
                   >
-                    {status === "submitting" ? "Sending…" : "Send message"}
-                  </GlowButton>
-                </form>
-              )}
+                    <motion.form
+                      onSubmit={onSubmit}
+                      initial="hidden"
+                      whileInView="show"
+                      viewport={{ once: true, amount: 0.25 }}
+                      variants={{
+                        hidden: {},
+                        show: {
+                          transition: {
+                            staggerChildren: reduce ? 0 : 0.09,
+                            delayChildren: reduce ? 0 : 0.15,
+                          },
+                        },
+                      }}
+                      className={cn(
+                        "flex flex-col gap-6 transition-opacity duration-300",
+                        status === "submitting" && "opacity-80"
+                      )}
+                    >
+                      {FIELDS.map((field) => (
+                        <motion.div
+                          key={field.name}
+                          variants={item}
+                          className="group"
+                        >
+                          <label
+                            htmlFor={field.name}
+                            className="mb-2 block text-sm font-medium text-[rgb(var(--color-foreground))] transition-colors duration-300 group-focus-within:text-[rgb(var(--color-accent))]"
+                          >
+                            {field.label}
+                            {field.optional && (
+                              <span className="ml-1.5 text-xs font-normal text-[rgb(var(--color-muted)/0.7)]">
+                                optional
+                              </span>
+                            )}
+                          </label>
+                          <div className="relative">
+                            <input
+                              id={field.name}
+                              name={field.name}
+                              type={field.type}
+                              required={!field.optional}
+                              placeholder={field.placeholder}
+                              className="h-[52px] w-full rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-background)/0.6)] px-4 text-[rgb(var(--color-foreground))] outline-none transition-[border-color,background-color] duration-300 placeholder:text-[rgb(var(--color-muted)/0.7)] focus:border-[rgb(var(--color-accent)/0.6)] focus:bg-[rgb(var(--color-background)/0.85)] focus:ring-1 focus:ring-[rgb(var(--color-accent)/0.5)]"
+                            />
+                            {/* Accent underline sweeps in from the center on focus */}
+                            <span
+                              aria-hidden="true"
+                              className="pointer-events-none absolute inset-x-2 bottom-0 h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-[rgb(var(--color-accent))] to-transparent transition-transform duration-300 ease-out group-focus-within:scale-x-100"
+                            />
+                          </div>
+                        </motion.div>
+                      ))}
+
+                      <motion.div variants={item} className="group">
+                        <label
+                          htmlFor="message"
+                          className="mb-2 block text-sm font-medium text-[rgb(var(--color-foreground))] transition-colors duration-300 group-focus-within:text-[rgb(var(--color-accent))]"
+                        >
+                          Message
+                        </label>
+                        <div className="relative">
+                          <textarea
+                            id="message"
+                            name="message"
+                            required
+                            rows={4}
+                            placeholder="Tell us about your project…"
+                            className="min-h-[120px] w-full resize-y rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-background)/0.6)] p-4 text-[rgb(var(--color-foreground))] outline-none transition-[border-color,background-color] duration-300 placeholder:text-[rgb(var(--color-muted)/0.7)] focus:border-[rgb(var(--color-accent)/0.6)] focus:bg-[rgb(var(--color-background)/0.85)] focus:ring-1 focus:ring-[rgb(var(--color-accent)/0.5)]"
+                          />
+                          <span
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-x-2 bottom-[7px] h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-[rgb(var(--color-accent))] to-transparent transition-transform duration-300 ease-out group-focus-within:scale-x-100"
+                          />
+                        </div>
+                      </motion.div>
+
+                      <motion.div variants={item}>
+                        <GlowButton
+                          type="submit"
+                          icon="sparkle"
+                          disabled={status === "submitting"}
+                          className={cn(
+                            "mt-1 self-start",
+                            status === "submitting" &&
+                              "pointer-events-none opacity-70"
+                          )}
+                        >
+                          {status === "submitting" ? "Sending…" : "Send message"}
+                        </GlowButton>
+                      </motion.div>
+                    </motion.form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>

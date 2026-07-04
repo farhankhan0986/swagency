@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-// Sparkles — the reference icon.
+// Sparkles  the reference icon.
 function SparkleIcon() {
   return (
     <svg
@@ -16,7 +16,7 @@ function SparkleIcon() {
   );
 }
 
-// Filled arrow — for secondary actions.
+// Filled arrow  for secondary actions.
 function ArrowIcon() {
   return (
     <svg

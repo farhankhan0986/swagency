@@ -8,10 +8,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Primary CTA — one of the three sanctioned uses of the accent.
+        // Primary CTA  one of the three sanctioned uses of the accent.
         primary:
           "bg-[rgb(var(--color-accent))] text-[rgb(var(--color-accent-foreground))] shadow-[0_0_30px_-12px_rgb(var(--color-accent)/0.6)] hover:bg-[rgb(var(--color-accent)/0.9)]",
-        // Secondary CTA — quiet by default; accent only appears on hover/focus.
+        // Secondary CTA  quiet by default; accent only appears on hover/focus.
         secondary:
           "border border-[rgb(var(--color-border))] bg-transparent text-[rgb(var(--color-foreground))] hover:border-[rgb(var(--color-accent)/0.55)] hover:text-[rgb(var(--color-accent))]",
         tertiary: "bg-[rgb(var(--color-surface)/0.35)] text-[rgb(var(--color-accent))] hover:bg-[rgb(var(--color-accent)/0.9)] hover:text-[rgb(var(--color-accent-foreground))]",

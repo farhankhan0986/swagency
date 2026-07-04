@@ -19,7 +19,7 @@ const PLANS = [
     price: { USD: "$500", INR: "₹40,000" },
     features: [
       "Single high-converting page",
-      "Custom design — no templates",
+      "Custom design  no templates",
       "Mobile-first and fast",
       "Contact form wired up",
       "Deployed and live",
@@ -205,11 +205,11 @@ export default function Pricing() {
             variants={item}
             className="mt-5 text-base leading-relaxed text-[rgb(var(--color-muted))] sm:text-lg"
           >
-            No fixed tiers or hidden extras. These are typical starting points —
+            No fixed tiers or hidden extras. These are typical starting points 
             you get an exact quote once we&apos;ve scoped the work together.
           </motion.p>
 
-          {/* Currency toggle — USD default, switch to INR. */}
+          {/* Currency toggle  USD default, switch to INR. */}
           <motion.div
             variants={item}
             className="mt-8 inline-flex items-center gap-1 rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] p-1 backdrop-blur"

@@ -19,7 +19,7 @@ const REASONS = [
   {
     icon: Zap,
     title: "Fast delivery",
-    desc: "Weeks, not months. You see working progress early and often — never radio silence.",
+    desc: "Weeks, not months. You see working progress early and often  never radio silence.",
   },
   {
     icon: Code2,
@@ -29,7 +29,7 @@ const REASONS = [
   {
     icon: Search,
     title: "SEO ready",
-    desc: "Built to be found — semantic markup, fast load times, and metadata done properly.",
+    desc: "Built to be found  semantic markup, fast load times, and metadata done properly.",
   },
   {
     icon: Smartphone,
@@ -39,7 +39,7 @@ const REASONS = [
   {
     icon: Layers,
     title: "Scalable architecture",
-    desc: "Structured to grow with you — no painful rewrite when traffic or scope spikes.",
+    desc: "Structured to grow with you  no painful rewrite when traffic or scope spikes.",
   },
   {
     icon: LifeBuoy,
@@ -51,7 +51,7 @@ const REASONS = [
 /**
  * One spotlight card. The border glow and inner spotlight follow the cursor
  * via the --x/--y custom properties set by the grid's single mousemove
- * handler — pure CSS gradients on small layers, no canvas, no re-renders.
+ * handler  pure CSS gradients on small layers, no canvas, no re-renders.
  */
 function SpotlightCard({ icon: Icon, title, desc, index, variants }) {
   return (
@@ -60,7 +60,7 @@ function SpotlightCard({ icon: Icon, title, desc, index, variants }) {
       data-spot
       className="group relative h-full rounded-2xl bg-[rgb(var(--color-border))] p-px transition-transform duration-300 ease-out hover:-translate-y-1"
     >
-      {/* Border glow — shows through the 1px padding ring on hover */}
+      {/* Border glow  shows through the 1px padding ring on hover */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -153,7 +153,7 @@ export default function WhyTrustUs() {
       id="why-us"
       className="relative overflow-hidden bg-[rgb(var(--color-background))] py-24 sm:py-32"
     >
-      {/* Static ambient background — painted once, no animation loop */}
+      {/* Static ambient background  painted once, no animation loop */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         {/* Faint dot field, masked toward the edges */}
         <div className="absolute inset-0 opacity-40 [background-image:radial-gradient(rgb(var(--color-accent)/0.22)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:radial-gradient(ellipse_70%_55%_at_50%_35%,black_20%,transparent_75%)]" />
@@ -195,7 +195,7 @@ export default function WhyTrustUs() {
             variants={item}
             className="max-w-md text-base leading-relaxed text-[rgb(var(--color-muted))] sm:text-lg lg:justify-self-end lg:pb-1"
           >
-            Six reasons clients pick us to build their product — and stick
+            Six reasons clients pick us to build their product  and stick
             around long after launch.
           </motion.p>
         </motion.div>
@@ -239,7 +239,7 @@ export default function WhyTrustUs() {
           className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-[rgb(var(--color-border))] pt-6 sm:flex-row sm:items-center"
         >
           <p className="text-sm text-[rgb(var(--color-muted))]">
-            Still comparing options? Talk to us — no pitch, just answers.
+            Still comparing options? Talk to us  no pitch, just answers.
           </p>
           <button
             type="button"

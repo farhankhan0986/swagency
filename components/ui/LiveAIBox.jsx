@@ -46,7 +46,7 @@ const CONVERSATIONS = [
   },
 ];
 
-// Timing constants — one full cycle ≈ 10–12 s depending on text length.
+// Timing constants  one full cycle ≈ 10–12 s depending on text length.
 const PROMPT_SPEED = 36; // ms/char
 const RESPONSE_SPEED = 18; // ms/char
 const PAUSE_AFTER_PROMPT = 850;
@@ -163,7 +163,7 @@ export default function LiveAIBox() {
         className="grid gap-5 bg-[rgb(var(--color-surface))] p-5"
         aria-label="Live demonstration of an AI feature being described"
       >
-        {/* Header — mark + quiet interface label */}
+        {/* Header  mark + quiet interface label */}
         <div className="flex items-center justify-between">
           <KorvaneMark />
           <span className="font-mono text-[11px] tracking-wide text-[rgb(var(--color-muted)/0.7)]">
@@ -171,7 +171,7 @@ export default function LiveAIBox() {
           </span>
         </div>
 
-        {/* The exchange — monospace, used nowhere else on the page. */}
+        {/* The exchange  monospace, used nowhere else on the page. */}
         <motion.div
           animate={{ opacity: visible ? 1 : 0, y: visible ? 0 : 8 }}
           transition={{ duration: FADE_DURATION / 1000, ease: "easeOut" }}
@@ -201,7 +201,7 @@ export default function LiveAIBox() {
             </p>
           </div>
 
-          {/* AI output — thinking spinner, then streamed response */}
+          {/* AI output  thinking spinner, then streamed response */}
           <div className="min-h-[132px] px-1">
             {isThinking ? (
               <div className="flex items-center gap-2">

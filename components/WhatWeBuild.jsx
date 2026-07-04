@@ -24,7 +24,7 @@ import GlowButton from "@/components/ui/GlowButton";
 const ease = [0.22, 1, 0.36, 1];
 
 /* ------------------------------------------------------------------ */
-/* Card mini-visuals — pure CSS/transform animation, no canvas.        */
+/* Card mini-visuals  pure CSS/transform animation, no canvas.        */
 /* ------------------------------------------------------------------ */
 
 function Panel({ className = "", children }) {
@@ -147,34 +147,47 @@ function VisualSaaS() {
 }
 
 /* Bar chart that grows in on scroll */
-const BARS = [42, 68, 34, 80, 58, 92, 70];
+const BARS = [22, 38, 35, 40, 34, 62, 22];
 
 function VisualDashboard({ reduce }) {
   return (
-    <Panel className="flex items-end gap-1.5 px-5 pt-6">
+    <Panel className="relative flex h-40 items-end px-5 pt-6">
       <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-[rgb(var(--color-accent)/0.3)] bg-[rgb(var(--color-accent)/0.1)] px-2 py-0.5 font-mono text-[10px] text-[rgb(var(--color-accent))]">
         <TrendingUp className="size-3" aria-hidden="true" />
         +32%
       </span>
-      {BARS.map((h, i) => (
-        <motion.span
-          key={i}
-          initial={reduce ? { opacity: 0 } : { scaleY: 0 }}
-          whileInView={reduce ? { opacity: 1 } : { scaleY: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{
-            duration: reduce ? 0.2 : 0.55,
-            delay: reduce ? 0 : 0.15 + i * 0.06,
-            ease,
-          }}
-          style={{ height: `${h}%` }}
-          className={`flex-1 origin-bottom rounded-t ${
-            i === 5
-              ? "bg-[rgb(var(--color-accent)/0.8)] shadow-[0_0_16px_-2px_rgb(var(--color-accent)/0.6)]"
-              : "bg-[rgb(var(--color-border))]"
-          }`}
-        />
-      ))}
+      {/* One observer on the (untransformed) wrapper drives every bar —
+          per-bar whileInView on scaleY(0) elements fires unreliably. */}
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.3 }}
+        className="flex h-full w-full items-end gap-1.5"
+      >
+        {BARS.map((h, i) => (
+          <motion.span
+            key={i}
+            variants={{
+              hidden: reduce ? { opacity: 0 } : { opacity: 1, scaleY: 0 },
+              show: {
+                opacity: 1,
+                scaleY: 1,
+                transition: {
+                  duration: reduce ? 0.2 : 0.55,
+                  delay: reduce ? 0 : 0.15 + i * 0.06,
+                  ease,
+                },
+              },
+            }}
+            style={{ height: `${h}%` }}
+            className={`flex-1 origin-bottom rounded-t ${
+              i === 5
+                ? "bg-[rgb(var(--color-accent)/0.8)] shadow-[0_0_16px_-2px_rgb(var(--color-accent)/0.6)]"
+                : "bg-[rgb(var(--color-border))]"
+            }`}
+          />
+        ))}
+      </motion.div>
     </Panel>
   );
 }
@@ -233,7 +246,7 @@ function VisualAutomations() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Card shell — same spotlight-border language as the why-us section.  */
+/* Card shell  same spotlight-border language as the why-us section.  */
 /* ------------------------------------------------------------------ */
 
 function ServiceCard({ span = "", variants, visual, icon: Icon, title, description, tags }) {
@@ -301,7 +314,7 @@ export default function WhatWeBuild() {
   const gridRef = useRef(null);
   const frameRef = useRef(0);
 
-  // One listener for the whole grid — writes cursor coords into each card's
+  // One listener for the whole grid  writes cursor coords into each card's
   // CSS variables inside a single rAF. No React state, zero re-renders.
   const handleMouseMove = useCallback((e) => {
     const grid = gridRef.current;
@@ -340,7 +353,7 @@ export default function WhatWeBuild() {
       icon: Bot,
       title: "AI Features & Agents",
       description:
-        "Chatbots, copilots, RAG over your own docs, and agents that take real actions — built into your product, not bolted on the side.",
+        "Chatbots, copilots, RAG over your own docs, and agents that take real actions  built into your product, not bolted on the side.",
       span: "md:col-span-2",
       tags: ["Chatbots", "RAG", "Copilots", "Agents"],
       visual: <VisualAI />,
@@ -349,7 +362,7 @@ export default function WhatWeBuild() {
       icon: Smartphone,
       title: "Web & Mobile Apps",
       description:
-        "Fast, modern full-stack apps with Next.js and React — one codebase, every screen.",
+        "Fast, modern full-stack apps with Next.js and React  one codebase, every screen.",
       visual: <VisualApps />,
     },
     {
@@ -388,7 +401,7 @@ export default function WhatWeBuild() {
       id="services"
       className="relative overflow-hidden bg-[rgb(var(--color-background))] py-24 sm:py-32"
     >
-      {/* Static ambient background — painted once, no animation loop */}
+      {/* Static ambient background  painted once, no animation loop */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         {/* Blend from the hero */}
         <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-[rgb(var(--color-surface)/0.4)] to-transparent" />
@@ -431,7 +444,7 @@ export default function WhatWeBuild() {
             className="mt-5 text-base leading-relaxed text-[rgb(var(--color-muted))] sm:text-lg"
           >
             Whatever you&apos;re building, the same hands take it from concept to
-            launch — including the AI parts.
+            launch  including the AI parts.
           </motion.p>
         </motion.div>
 
@@ -475,7 +488,7 @@ export default function WhatWeBuild() {
                 Something else in mind?
               </h3>
               <p className="relative mt-1.5 text-sm leading-relaxed text-[rgb(var(--color-muted))]">
-                Tell us the problem — we&apos;ll figure out the build.
+                Tell us the problem  we&apos;ll figure out the build.
               </p>
               <GlowButton
                 icon="arrow"
