@@ -91,7 +91,7 @@ export default function Hero() {
     <AuroraBackground>
       <div className="relative z-10 mx-auto w-full max-w-6xl px-6 py-24">
         <div className="grid w-full grid-cols-1 items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-          {/* Left  the pitch */}
+          {/* Left — the pitch */}
           <motion.div
             variants={container}
             initial="hidden"
@@ -107,7 +107,10 @@ export default function Hero() {
                 <span className="live-ping absolute inline-flex h-full w-full rounded-full bg-[rgb(var(--color-accent))] opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[rgb(var(--color-accent))]" />
               </span>
-              Available for new projects
+              Let's build something
+              <motion.span className="bg-gradient-to-r from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-2))] bg-clip-text text-transparent">
+                &quot;Great&quot;
+              </motion.span>
             </motion.span>
 
             {/* Word-by-word headline reveal */}
@@ -250,7 +253,7 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* Grounding meta row  real logos, ties into the stack section */}
+            {/* Grounding meta row — real logos, ties into the stack section */}
             <motion.ul
               variants={item}
               className="mt-9 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start"
@@ -270,7 +273,7 @@ export default function Hero() {
             </motion.ul>
           </motion.div>
 
-          {/* Right  the signature element */}
+          {/* Right — the signature element */}
           <motion.div
             variants={box}
             initial="hidden"
@@ -299,7 +302,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[rgb(var(--color-background))]"
       />
 
-      {/* Scroll cue  CSS beam, no JS animation loop */}
+      {/* Scroll cue — CSS beam, no JS animation loop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
