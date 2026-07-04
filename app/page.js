@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import WhatWeBuild from "@/components/WhatWeBuild";
 import WhyTrustUs from "@/components/WhyTrustUs";
+import TechStack from "@/components/TechStack";
 import Pricing from "@/components/Pricing";
 import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
@@ -15,6 +16,7 @@ export default function Home() {
       <Hero />
       <WhatWeBuild />
       <WhyTrustUs />
+      <TechStack />
       <Pricing />
       <Testimonials />
       <Faq />

@@ -3,7 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import LiveAIBox from "@/components/ui/LiveAIBox";
-import { Sparkles } from "lucide-react";
 import GlowButton from "@/components/ui/GlowButton";
 
 const STACK = [
@@ -12,6 +11,9 @@ const STACK = [
   "AI Integrations",
   "Custom Solutions",
 ];
+
+const scrollTo = (id) =>
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
 export default function Hero() {
   const reduce = useReducedMotion();
@@ -60,16 +62,17 @@ export default function Hero() {
             animate="show"
             className="flex flex-col items-center text-center lg:items-start lg:text-left"
           >
-           <motion.span
-  variants={item}
-  className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] px-3.5 py-1.5 text-xs font-medium tracking-wide text-[rgb(var(--color-muted))] backdrop-blur"
->
-  <span className="h-1.5 w-1.5 rounded-full bg-[rgb(var(--color-accent))]" />
-   We design to make an{" "}
-  <span className="bg-gradient-to-r from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-2))] bg-clip-text font-semibold text-transparent">
-    "Impact"
-  </span>
-</motion.span>
+            {/* Availability pill with a live ping dot */}
+            <motion.span
+              variants={item}
+              className="inline-flex items-center gap-2.5 rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] px-3.5 py-1.5 text-xs font-medium tracking-wide text-[rgb(var(--color-muted))] backdrop-blur"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="live-ping absolute inline-flex h-full w-full rounded-full bg-[rgb(var(--color-accent))] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[rgb(var(--color-accent))]" />
+              </span>
+              Available for new projects
+            </motion.span>
 
             <motion.h1
               variants={item}
@@ -82,71 +85,55 @@ export default function Hero() {
               inside them.
             </motion.h1>
 
-            {/* <motion.p
+            <motion.p
               variants={item}
               className="mt-6 max-w-[540px] text-base leading-relaxed text-[rgb(var(--color-muted))] sm:text-lg"
             >
-             <motion.p
-  variants={item}
-  className="mt-6 max-w-[540px] text-base leading-relaxed text-[rgb(var(--color-muted))] sm:text-lg"
->
-  Full stack development for startups and growing businesses. From{" "}
-  <span className="font-medium text-[rgb(var(--color-accent))]">
-    idea
-  </span>{" "}
-  to{" "}
-  <span className="font-medium text-[rgb(var(--color-accent-2))]">
-    launch
-  </span>
-  , with{" "}
-  <span className="font-medium text-[rgb(var(--color-accent))]">
-    AI
-  </span>{" "}
-  when it makes sense.
-</motion.p>
-            </motion.p> */}
+              Full-stack development for startups and growing businesses — from{" "}
+              <span className="font-medium text-[rgb(var(--color-foreground))]">
+                idea
+              </span>{" "}
+              to{" "}
+              <span className="font-medium text-[rgb(var(--color-foreground))]">
+                launch
+              </span>
+              , with AI where it actually makes sense.
+            </motion.p>
 
             <motion.div
               variants={item}
               className="mt-9 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:gap-4"
             >
-              <GlowButton icon="sparkle" className="w-full sm:w-auto">
+              <GlowButton
+                icon="sparkle"
+                className="w-full sm:w-auto"
+                onClick={() => scrollTo("contact")}
+              >
                 Start a Project
               </GlowButton>
-              <GlowButton icon="arrow" className="w-full sm:w-auto">
+              <GlowButton
+                icon="arrow"
+                className="w-full sm:w-auto"
+                onClick={() => scrollTo("services")}
+              >
                 See Our Work
               </GlowButton>
             </motion.div>
 
             {/* Grounding meta row */}
-           <motion.ul
-  variants={item}
-  className="mt-10 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start"
->
-  {STACK.map((tech) => (
-    <li
-      key={tech}
-      className="
-        rounded-full
-        border border-[rgb(var(--color-border))]
-        bg-[rgb(var(--color-surface)/0.45)]
-        px-3.5 py-1.5
-        text-xs font-medium tracking-wide
-        text-[rgb(var(--color-muted))]
-        backdrop-blur
-        transition-all duration-300 ease-out
-        hover:-translate-y-0.5
-        hover:border-[rgb(var(--color-accent)/0.45)]
-        hover:bg-[rgb(var(--color-surface)/0.8)]
-        hover:text-[rgb(var(--color-foreground))]
-        hover:shadow-[0_0_18px_-8px_rgb(var(--color-accent)/0.45)]
-        hover: cursor-pointer
-      "
-    >
-      {tech}
-    </li>
-  ))}
-</motion.ul>
+            <motion.ul
+              variants={item}
+              className="mt-10 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start"
+            >
+              {STACK.map((tech) => (
+                <li
+                  key={tech}
+                  className="rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.45)] px-3.5 py-1.5 text-xs font-medium tracking-wide text-[rgb(var(--color-muted))] backdrop-blur transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[rgb(var(--color-accent)/0.45)] hover:bg-[rgb(var(--color-surface)/0.8)] hover:text-[rgb(var(--color-foreground))] hover:shadow-[0_0_18px_-8px_rgb(var(--color-accent)/0.45)]"
+                >
+                  {tech}
+                </li>
+              ))}
+            </motion.ul>
           </motion.div>
 
           {/* Right — the signature element */}
@@ -161,33 +148,29 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue — a thin line with a slow pulse. */}
-      <motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{
-    delay: reduce ? 0 : 1.2,
-    duration: reduce ? 0.2 : 0.6,
-  }}
-  className="pointer-events-none absolute bottom-8 left-1/2 hidden -translate-x-1/2 sm:flex flex-col items-center gap-3"
->
-  <span className="text-[10px] uppercase tracking-[0.35em] text-[rgb(var(--color-muted)/0.7)]">
-    Scroll
-  </span>
+      {/* Soft fade into the services section below */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[rgb(var(--color-background))]"
+      />
 
-  <div className="relative h-12 w-px overflow-hidden bg-[rgb(var(--color-border))]">
-  <motion.div
-    className="absolute left-1/2 h-8 w-[3px] -translate-x-1/2 rounded-full bg-gradient-to-b from-transparent via-[rgb(var(--color-accent))] to-transparent"
-    initial={{ y: -32 }}
-    animate={{ y: 48 }}
-    transition={{
-      duration: 2,
-      ease: "linear",
-      repeat: Infinity,
-    }}
-  />
-</div>
-</motion.div>
+      {/* Scroll cue — CSS beam, no JS animation loop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: reduce ? 0 : 1.2,
+          duration: reduce ? 0.2 : 0.6,
+        }}
+        className="pointer-events-none absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 sm:flex"
+      >
+        <span className="text-[10px] uppercase tracking-[0.35em] text-[rgb(var(--color-muted)/0.7)]">
+          Scroll
+        </span>
+        <div className="relative h-12 w-px overflow-hidden bg-[rgb(var(--color-border))]">
+          <span className="scroll-cue-beam absolute left-1/2 h-8 w-[3px] rounded-full bg-gradient-to-b from-transparent via-[rgb(var(--color-accent))] to-transparent" />
+        </div>
+      </motion.div>
     </AuroraBackground>
   );
 }

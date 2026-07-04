@@ -10,11 +10,14 @@ import React, { useEffect, useRef } from "react";
  *  - Token-driven, teal/emerald. Gradient stops come from --color-accent /
  *    --color-accent-2; the striping uses --color-background. No hex, no blue.
  *  - Always dark: the light/invert path and zinc backgrounds are removed.
- *  - Pointer reactive: a damped parallax translate on the aurora layer.
+ *  - Perf: the stock component animates background-position on a full-screen
+ *    blurred, blend-mode layer — a whole-screen repaint every frame. Here the
+ *    two gradient layers are oversized, painted once, and drift via
+ *    transform-only keyframes (.aurora-layer--a / --b in globals.css), so the
+ *    animation runs entirely on the compositor.
+ *  - Pointer reactive: a damped parallax translate on the aurora wrapper.
  *    Cursor position is eased toward via requestAnimationFrame and written to
- *    --pointer-x / --pointer-y on the root (no React state, no re-renders). The
- *    listener lives on the root (the hero surface); the gradient layer stays
- *    pointer-events-none so it never blocks the CTAs or the AI box.
+ *    --pointer-x / --pointer-y on the root (no React state, no re-renders).
  *  - Respects prefers-reduced-motion: no listener, drift frozen in globals.css.
  */
 export const AuroraBackground = ({
@@ -79,6 +82,12 @@ export const AuroraBackground = ({
     };
   }, []);
 
+  const layerStyle = {
+    backgroundImage: "var(--dark-gradient), var(--aurora)",
+    backgroundSize: "300% 100%, 200% 100%",
+    backgroundPosition: "50% 50%, 50% 50%",
+  };
+
   return (
     <div
       ref={surfaceRef}
@@ -90,10 +99,10 @@ export const AuroraBackground = ({
       {...props}
     >
       {/* Parallax wrapper — the damped pointer translate lives here so it never
-          collides with the aurora's own background-position animation. */}
+          collides with the layers' own drift animation. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-[8%] overflow-hidden"
+        className="pointer-events-none absolute -inset-[8%]"
         style={{
           transform:
             "translate3d(calc((var(--pointer-x, 0.5) - 0.5) * 9%), calc((var(--pointer-y, 0.5) - 0.5) * 9%), 0)",
@@ -101,16 +110,32 @@ export const AuroraBackground = ({
             "repeating-linear-gradient(100deg, rgb(var(--color-accent) / 0.6) 10%, rgb(var(--color-accent-2) / 0.3) 15%, rgb(var(--color-accent) / 0.5) 20%, rgb(var(--color-accent-2) / 0.25) 25%, rgb(var(--color-accent) / 0.55) 30%)",
           "--dark-gradient":
             "repeating-linear-gradient(100deg, rgb(var(--color-background)) 0%, rgb(var(--color-background)) 7%, transparent 10%, transparent 12%, rgb(var(--color-background)) 16%)",
-          "--transparent": "transparent",
         }}
       >
+        {/* Static mask + group opacity live on this wrapper; the moving layers
+            inside are transform-only. */}
         <div
           className={cn(
-            `aurora-layer after:animate-aurora pointer-events-none absolute -inset-[10px] [background-image:var(--dark-gradient),var(--aurora)] [background-size:300%,_200%] [background-position:50%_50%,50%_50%] opacity-50 blur-[10px] will-change-transform [background-image:var(--dark-gradient),var(--aurora)] after:absolute after:inset-0 after:[background-image:var(--dark-gradient),var(--aurora)] after:[background-size:200%,_100%] after:[background-attachment:fixed] after:mix-blend-difference after:content-[""]`,
+            "absolute inset-0 overflow-hidden opacity-50",
             showRadialGradient &&
-              `[mask-image:radial-gradient(ellipse_at_50%_0%,black_10%,var(--transparent)_70%)]`
+              "[mask-image:radial-gradient(ellipse_at_50%_0%,black_10%,transparent_70%)]"
           )}
-        ></div>
+        >
+          {/* Base banding — slow horizontal drift */}
+          <div
+            className="aurora-layer aurora-layer--a absolute left-[-60%] top-[-20%] h-[140%] w-[220%] blur-[10px] will-change-transform"
+            style={layerStyle}
+          />
+          {/* Interference layer — different scale + speed, blended for the
+              shimmering banding the stock aurora gets from its ::after */}
+          <div
+            className="aurora-layer aurora-layer--b absolute left-[-60%] top-[-20%] h-[140%] w-[220%] mix-blend-difference blur-[10px] will-change-transform"
+            style={{
+              ...layerStyle,
+              backgroundSize: "200% 100%, 100% 100%",
+            }}
+          />
+        </div>
       </div>
 
       {/* Film grain — neutral, very low opacity. Adds premium texture and

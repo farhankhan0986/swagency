@@ -121,8 +121,15 @@ export const DottedGlowBackground = ({
 
     const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 2);
 
+    // Cache dimensions so the draw loop never touches getBoundingClientRect()
+    // (which forces a synchronous layout every frame and stutters scrolling).
+    let cw = 0;
+    let ch = 0;
+
     const resize = () => {
       const { width, height } = container.getBoundingClientRect();
+      cw = width;
+      ch = height;
       el.width = Math.max(1, Math.floor(width * dpr));
       el.height = Math.max(1, Math.floor(height * dpr));
       el.style.width = `${Math.floor(width)}px`;
@@ -173,7 +180,8 @@ export const DottedGlowBackground = ({
       }
       const dt = (now - last) / 1000; // seconds
       last = now;
-      const { width, height } = container.getBoundingClientRect();
+      const width = cw;
+      const height = ch;
 
       ctx.clearRect(0, 0, el.width, el.height);
       ctx.globalAlpha = opacity;

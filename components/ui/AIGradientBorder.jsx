@@ -1,35 +1,30 @@
-﻿"use client";
+"use client";
 
-import { useCallback, useEffect, useRef } from "react";
-import {
-  animate,
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useReducedMotion,
-} from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /**
  * Animated conic-gradient border with an optional inner glow spill.
  *
- * The rotating angle is driven by a Framer Motion value so the border
- * spins without triggering a React re-render. Under `prefers-reduced-motion`
- * the gradient is frozen on a pleasant static slice.
+ * Perf: the gradient is painted once on an oversized square layer and spun
+ * with a CSS transform (`.conic-spin` in globals.css), so the rotation runs
+ * entirely on the compositor. The previous version regenerated the
+ * conic-gradient string every frame via a Framer Motion value, which forced
+ * a repaint of the blurred spill layer on every frame.
  *
- * Requires the `.ai-glow-spill-mask` utility in globals.css for the glow mask.
- * Shared by `LiveAIBox` and `Navbar`.
+ * Under `prefers-reduced-motion` the spin is frozen on a static slice
+ * (see the reduced-motion block in globals.css).
+ *
+ * Shared by `LiveAIBox` and the featured `Pricing` card.
  *
  * @param {object}  props
  * @param {React.ReactNode} props.children
  * @param {string}  [props.className]           - classes applied to the root wrapper
  * @param {string}  [props.stops]               - custom conic-gradient stop string
- * @param {boolean} [props.showGlow=true]        - toggle the inner glow spill
- * @param {string}  [props.spillClassName]       - extra classes for the glow layer
- * @param {number}  [props.duration=5]           - seconds for one full revolution
- * @param {string}  [props.borderWidth="1.5px"]  - width of the gradient border ring
- * @param {boolean} [props.pauseOnHover=false]   - freeze the spin while hovered
- * @param {string}  [props.as="div"]             - root element tag ("div" | "section" | …)
+ * @param {boolean} [props.showGlow=true]       - toggle the inner glow spill
+ * @param {string}  [props.spillClassName]      - extra classes for the glow layer
+ * @param {number}  [props.duration=5]          - seconds for one full revolution
+ * @param {string}  [props.borderWidth="1.5px"] - width of the gradient border ring
+ * @param {string}  [props.as="div"]            - root element tag ("div" | "section" | …)
  */
 
 // One long, calm arc — the default, used by the LiveAIBox card.
@@ -44,43 +39,12 @@ export function AIGradientBorder({
   duration = 5,
   stops = DEFAULT_STOPS,
   borderWidth = "1.5px",
-  pauseOnHover = false,
-  glowOnHover = false,
   as: Tag = "div",
 }) {
-  const reduce = useReducedMotion();
-  const turn = useMotionValue(0);
-  // Keep a ref to the animation controls so we can pause/resume on hover.
-  const controlsRef = useRef(null);
-
-  useEffect(() => {
-    if (reduce) {
-      turn.set(0.12); // a pleasant static slice of the gradient
-      return;
-    }
-
-    controlsRef.current = animate(turn, 1, {
-      ease: "linear",
-      duration,
-      repeat: Infinity,
-    });
-
-    return () => {
-      controlsRef.current?.stop();
-    };
-    // `turn` is a stable MotionValue instance — intentionally excluded from deps.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [duration, reduce]);
-
-  const handleMouseEnter = useCallback(() => {
-    if (pauseOnHover && controlsRef.current) controlsRef.current.pause();
-  }, [pauseOnHover]);
-
-  const handleMouseLeave = useCallback(() => {
-    if (pauseOnHover && controlsRef.current) controlsRef.current.play();
-  }, [pauseOnHover]);
-
-  const gradient = useMotionTemplate`conic-gradient(from ${turn}turn, ${stops})`;
+  const spinStyle = {
+    backgroundImage: `conic-gradient(from 0turn, ${stops})`,
+    animationDuration: `${duration}s`,
+  };
 
   // Shared mask that clips a full-box layer down to just the ring edge.
   const ringMask = {
@@ -93,58 +57,34 @@ export function AIGradientBorder({
   };
 
   return (
-    <Tag
-      className={cn("relative", glowOnHover && "group", className)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <Tag className={cn("relative", className)}>
       {/* Content layer — overflow hidden so the glow spill is clipped to the
           card shape. Children sit above (z-20) the glow (z-10). */}
       <div className="relative overflow-hidden rounded-[inherit]">
         <div className="relative z-20">{children}</div>
 
         {showGlow && (
-          <motion.div
+          <div
             aria-hidden="true"
-            style={{ backgroundImage: gradient }}
-            className={cn(
-              "ai-glow-spill-mask pointer-events-none absolute inset-[-40%] z-10 overflow-hidden",
-              spillClassName
-            )}
-          />
+            className="ai-glow-spill-mask pointer-events-none absolute inset-[-40%] z-10 overflow-hidden"
+          >
+            {/* Blur lives on the spinning layer itself so the filter result is
+                cached and only the transform changes per frame. */}
+            <div className={cn("conic-spin", spillClassName)} style={spinStyle} />
+          </div>
         )}
       </div>
 
       {/* Gradient border ring — masked to the ring edge only via the
-          border-box / content-box exclude trick. */}
-      {glowOnHover ? (
-        <>
-          {/* Static base ring — the plain resting border. */}
-          <div
-            aria-hidden="true"
-            style={{ backgroundColor: "rgb(var(--color-border))", ...ringMask }}
-            className="pointer-events-none absolute inset-0 z-30 rounded-[inherit]"
-          />
-          {/* Moving glow line — hidden until the wrapper is hovered. */}
-          <motion.div
-            aria-hidden="true"
-            style={{ backgroundImage: gradient, ...ringMask }}
-            className="pointer-events-none absolute inset-0 z-30 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          />
-        </>
-      ) : (
-        /* Always-on ring: base color fills the gradient's transparent gaps so
-           the edge reads continuous. */
-        <motion.div
-          aria-hidden="true"
-          style={{
-            backgroundColor: "rgb(var(--color-border))",
-            backgroundImage: gradient,
-            ...ringMask,
-          }}
-          className="pointer-events-none absolute inset-0 z-30 rounded-[inherit]"
-        />
-      )}
+          border-box / content-box exclude trick. The base color fills the
+          gradient's transparent gaps so the edge reads continuous. */}
+      <div
+        aria-hidden="true"
+        style={{ backgroundColor: "rgb(var(--color-border))", ...ringMask }}
+        className="pointer-events-none absolute inset-0 z-30 overflow-hidden rounded-[inherit]"
+      >
+        <div className="conic-spin" style={spinStyle} />
+      </div>
     </Tag>
   );
 }

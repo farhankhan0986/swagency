@@ -89,6 +89,117 @@ body {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Aurora drift — transform-only so the gradient layers are painted    */
+/* once and slide on the compositor (background-position animation     */
+/* repainted the whole screen through blur every frame).               */
+/* ------------------------------------------------------------------ */
+.aurora-layer--a {
+  animation: aurora-drift-a 24s ease-in-out infinite alternate;
+}
+.aurora-layer--b {
+  animation: aurora-drift-b 17s ease-in-out infinite alternate;
+}
+@keyframes aurora-drift-a {
+  from {
+    transform: translate3d(-16%, 0, 0);
+  }
+  to {
+    transform: translate3d(16%, 2%, 0);
+  }
+}
+@keyframes aurora-drift-b {
+  from {
+    transform: translate3d(14%, -2%, 0);
+  }
+  to {
+    transform: translate3d(-14%, 0, 0);
+  }
+}
+
+/* Rotating conic-gradient layer for AIGradientBorder — the gradient is
+   painted once and spun with a compositor-only transform. Duration is
+   set inline per instance. */
+.conic-spin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  aspect-ratio: 1;
+  width: 250%;
+  transform: translate(-50%, -50%) rotate(0turn);
+  will-change: transform;
+  animation: conic-spin linear infinite;
+}
+@keyframes conic-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+
+/* Scroll cue beam — CSS instead of an infinite JS animation loop. */
+.scroll-cue-beam {
+  animation: scroll-cue-beam 2s linear infinite;
+}
+@keyframes scroll-cue-beam {
+  from {
+    transform: translate(-50%, -2.5rem);
+  }
+  to {
+    transform: translate(-50%, 3.5rem);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Tech-stack marquee — the track holds two identical halves and       */
+/* slides -50% for a seamless loop. Transform-only, compositor-driven. */
+/* ------------------------------------------------------------------ */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration, 45s) linear infinite;
+  will-change: transform;
+}
+.marquee-track--reverse {
+  animation-direction: reverse;
+}
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Traveling light beam along a hairline — services section visuals.
+   Transform-only animation on a tiny strip, so it stays on the compositor. */
+.beam-line {
+  position: relative;
+  overflow: hidden;
+}
+.beam-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--color-accent)),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: beam-sweep 2.8s linear infinite;
+  animation-delay: var(--beam-delay, 0s);
+}
+@keyframes beam-sweep {
+  to {
+    transform: translateX(350%);
+  }
+}
+
 /* Availability "live" dot in the eyebrow pill */
 .live-ping {
   animation: live-ping 1.9s cubic-bezier(0, 0, 0.2, 1) infinite;
@@ -271,6 +382,25 @@ body {
     color: rgb(var(--color-foreground));
   }
   .contact-float {
+    animation: none !important;
+  }
+  .beam-line::after {
+    animation: none !important;
+    opacity: 0;
+  }
+  .aurora-layer--a,
+  .aurora-layer--b {
+    animation: none !important;
+  }
+  .conic-spin {
+    animation: none !important;
+    transform: translate(-50%, -50%) rotate(0.12turn) !important;
+  }
+  .scroll-cue-beam {
+    animation: none !important;
+    opacity: 0;
+  }
+  .marquee-track {
     animation: none !important;
   }
 }
