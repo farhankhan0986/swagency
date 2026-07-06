@@ -25,7 +25,7 @@ const STACK = [
 
 // Headline split for the word-by-word reveal. The gradient phrase stays one
 // unit so it never breaks across the stagger.
-const HEADLINE_LEAD = ["We", "build", "web", "apps,", "and", "the"];
+const HEADLINE_LEAD = ["We", "build", "websites,", "apps,", "and", "the"];
 const HEADLINE_TAIL = ["inside", "them."];
 
 const scrollTo = (id) =>
@@ -89,34 +89,31 @@ export default function Hero() {
 
   return (
     <AuroraBackground>
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-6 py-24">
-        <div className="grid w-full grid-cols-1 items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-          {/* Left — the pitch */}
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="flex flex-col items-center text-center lg:items-start lg:text-left"
-          >
+      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center px-6 pb-24 pt-28 sm:pt-32">
+        {/* The pitch — one centered axis */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="flex w-full flex-col items-center text-center"
+        >
             {/* Availability pill with a live ping dot */}
             <motion.span
-              variants={item}
-              className="inline-flex items-center gap-2.5 rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] px-3.5 py-1.5 text-xs font-medium tracking-wide text-[rgb(var(--color-muted))] backdrop-blur"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="live-ping absolute inline-flex h-full w-full rounded-full bg-[rgb(var(--color-accent))] opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[rgb(var(--color-accent))]" />
-              </span>
-              Let's build something
-              <motion.span className="bg-gradient-to-r from-[rgb(var(--color-accent))] to-[rgb(var(--color-accent-2))] bg-clip-text text-transparent">
-                &quot;Great&quot;
-              </motion.span>
-            </motion.span>
+  variants={item}
+  role="status"
+  className="inline-flex items-center gap-2.5 rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] px-3.5 py-1.5 text-xs font-medium tracking-wide text-[rgb(var(--color-muted))] backdrop-blur"
+>
+  <span className="relative flex h-2 w-2 shrink-0">
+    <span className="live-ping motion-reduce:hidden absolute inline-flex h-full w-full rounded-full bg-[rgb(var(--color-accent))] opacity-75" />
+    <span className="relative inline-flex h-2 w-2 rounded-full bg-[rgb(var(--color-accent))]" />
+  </span>
+  Currently taking on new builds
+</motion.span>
 
             {/* Word-by-word headline reveal */}
             <motion.h1
               variants={headline}
-              className="mt-6 text-balance font-display text-4xl font-medium leading-[1.06] tracking-tight text-[rgb(var(--color-foreground))] sm:text-5xl lg:text-[3.5rem] xl:text-[4rem]"
+              className="mt-7 max-w-[900px] text-balance font-display text-4xl font-medium leading-[1.05] tracking-tight text-[rgb(var(--color-foreground))] sm:text-6xl lg:text-7xl"
             >
               {HEADLINE_LEAD.map((w) => (
                 <motion.span
@@ -221,7 +218,7 @@ export default function Hero() {
             {/* Quiet reassurance under the CTAs */}
             <motion.div
               variants={item}
-              className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-[rgb(var(--color-muted))] lg:justify-start"
+              className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-[rgb(var(--color-muted))]"
             >
               <span className="inline-flex items-center gap-1.5">
                 <Check
@@ -229,13 +226,6 @@ export default function Hero() {
                   aria-hidden="true"
                 />
                 Free scoping call
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Check
-                  className="size-3.5 text-[rgb(var(--color-accent))]"
-                  aria-hidden="true"
-                />
-                No commitment
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Check
@@ -253,47 +243,73 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* Grounding meta row — real logos, ties into the stack section */}
-            <motion.ul
-              variants={item}
-              className="mt-9 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start"
-            >
+        </motion.div>
+
+        {/* Thread — the idea flows down into the machine */}
+        <motion.div
+          aria-hidden="true"
+          initial={reduce ? { opacity: 0 } : { opacity: 0, scaleY: 0 }}
+          animate={{ opacity: 1, scaleY: 1 }}
+          transition={{
+            duration: reduce ? 0.2 : 0.5,
+            ease,
+            delay: reduce ? 0 : 0.5,
+          }}
+          className="mt-12 h-14 w-px origin-top bg-gradient-to-b from-transparent via-[rgb(var(--color-accent)/0.5)] to-[rgb(var(--color-accent))]"
+        />
+
+        {/* The signature element, on its pedestal */}
+        <motion.div
+          variants={box}
+          initial="hidden"
+          animate="show"
+          className="relative mt-4 w-full max-w-[460px]"
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-8 rounded-[3rem] bg-[rgb(var(--color-accent)/0.09)] blur-3xl"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-10 left-1/2 h-20 w-[130%] -translate-x-1/2 rounded-[100%] bg-[rgb(var(--color-accent)/0.12)] blur-3xl"
+          />
+          <LiveAIBox />
+        </motion.div>
+
+        {/* Circuit rail — the stack feeding every build */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: reduce ? 0.2 : 0.6, delay: reduce ? 0 : 1.15 }}
+          className="mt-14 flex w-full max-w-2xl flex-col items-center"
+        >
+          <div className="flex w-full items-center gap-3 sm:gap-4">
+            <span
+              aria-hidden="true"
+              className="h-px flex-1 bg-gradient-to-r from-transparent to-[rgb(var(--color-border))]"
+            />
+            <ul className="flex items-center gap-2.5 sm:gap-3">
               {STACK.map(({ name, icon: Icon }) => (
-                <li
-                  key={name}
-                  className="group inline-flex items-center gap-2 rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.45)] px-3.5 py-1.5 text-xs font-medium tracking-wide text-[rgb(var(--color-muted))] backdrop-blur transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[rgb(var(--color-accent)/0.45)] hover:bg-[rgb(var(--color-surface)/0.8)] hover:text-[rgb(var(--color-foreground))] hover:shadow-[0_0_18px_-8px_rgb(var(--color-accent)/0.45)]"
-                >
-                  <Icon
-                    className="size-3.5 text-[rgb(var(--color-muted)/0.8)] transition-colors duration-300 group-hover:text-[rgb(var(--color-accent))]"
-                    aria-hidden="true"
-                  />
-                  {name}
+                <li key={name} title={name} className="group">
+                  <span className="flex size-9 items-center justify-center rounded-full border border-[rgb(var(--color-border))] bg-[rgb(var(--color-surface)/0.6)] backdrop-blur transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-[rgb(var(--color-accent)/0.5)] group-hover:shadow-[0_0_16px_-6px_rgb(var(--color-accent)/0.5)] sm:size-10">
+                    <Icon
+                      className="size-4 text-[rgb(var(--color-muted))] transition-colors duration-300 group-hover:text-[rgb(var(--color-accent))]"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span className="sr-only">{name}</span>
                 </li>
               ))}
-            </motion.ul>
-          </motion.div>
-
-          {/* Right — the signature element */}
-          <motion.div
-            variants={box}
-            initial="hidden"
-            animate="show"
-            className="flex w-full justify-center lg:justify-end"
-          >
-            <div className="relative w-full max-w-[440px]">
-            
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-8 rounded-[3rem] bg-[rgb(var(--color-accent)/0.09)] blur-3xl"
-              />
-              <LiveAIBox />
-
-            
-             
-              
-            </div>
-          </motion.div>
-        </div>
+            </ul>
+            <span
+              aria-hidden="true"
+              className="h-px flex-1 bg-gradient-to-l from-transparent to-[rgb(var(--color-border))]"
+            />
+          </div>
+          <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.3em] text-[rgb(var(--color-muted)/0.6)]">
+            The stack behind every build
+          </p>
+        </motion.div>
       </div>
 
       {/* Soft fade into the services section below */}
@@ -310,11 +326,8 @@ export default function Hero() {
           delay: reduce ? 0 : 1.4,
           duration: reduce ? 0.2 : 0.6,
         }}
-        className="pointer-events-none absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 sm:flex"
+        className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 sm:flex"
       >
-        <span className="text-[10px] uppercase tracking-[0.35em] text-[rgb(var(--color-muted)/0.7)]">
-          Scroll
-        </span>
         <div className="relative h-12 w-px overflow-hidden bg-[rgb(var(--color-border))]">
           <span className="scroll-cue-beam absolute left-1/2 h-8 w-[3px] rounded-full bg-gradient-to-b from-transparent via-[rgb(var(--color-accent))] to-transparent" />
         </div>
